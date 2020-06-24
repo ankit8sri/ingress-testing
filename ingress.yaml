@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: color-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: color.web.com
+    http:
+      paths:
+      - path: /blue
+        backend:
+          serviceName: bluepod-svc
+          servicePort: 80
+      - path: /green
+        backend:
+          serviceName: greenpod-svc
+          servicePort: 80

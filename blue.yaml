@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: bluepod
+  name: bluepod-svc
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: bluepod
+  type: NodePort
+
+---
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: bluepod
+  name: bluepod
+spec:
+  volumes:
+  - name: webpage
+    configMap:
+      name: webconfigs
+      items:
+      - key: blue.html
+        path: index.html
+  containers:
+  - image: nginx
+    name: bluecontainer
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: webpage
+      mountPath: /usr/share/nginx/html
